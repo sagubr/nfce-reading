@@ -1,60 +1,25 @@
-## Micronaut 4.3.8 Documentation
+# Consulta NFC-e
 
-- [User Guide](https://docs.micronaut.io/4.3.8/guide/index.html)
-- [API Reference](https://docs.micronaut.io/4.3.8/api/index.html)
-- [Configuration Reference](https://docs.micronaut.io/4.3.8/guide/configurationreference.html)
-- [Micronaut Guides](https://guides.micronaut.io/index.html)
----
+Este repositório contém o código-fonte do microserviço Consulta NFC-e. 
 
-- [Shadow Gradle Plugin](https://plugins.gradle.org/plugin/com.github.johnrengelman.shadow)
-- [Micronaut Gradle Plugin documentation](https://micronaut-projects.github.io/micronaut-gradle-plugin/latest/)
-- [GraalVM Gradle Plugin documentation](https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html)
-## Feature http-client documentation
+O microserviço é responsável por receber uma requisição `POST` via API no endpoint `http://localhost:8083/inspector/process-url` e realizar uma consulta no site da Secretaria da Fazenda de Minas Gerais (https://portalsped.fazenda.mg.gov.br/portalnfce/sistema/qrcode.xhtml?p=). A aplicação recebe a URL originada do QRCode da Nota Fiscal do Consumidor Eletrônica. 
 
-- [Micronaut HTTP Client documentation](https://docs.micronaut.io/latest/guide/index.html#nettyHttpClient)
+A partir do momento que é enviado a URL, o microserviço faz o acesso ao site e obtém os dados do HTML. Desse modo, ele realiza um parser no HTML utilizando a biblioteca JSoup. O parser foi contruído com base na formatação da site de Minas Gerais e pode não ser reutilizável para sites de outros de estados.
+
+Após finalizado o processo de parser, os dados são persistidos no Banco de Dados de forma ordenada, separando o Fornecedor, o Produto e a Nota Fiscal.
+
+**Cabe ressaltar que não foi encontrado uma API da Secretaria da Fazenda que disponibilizasse o consumo dos dados da NFc-e, por este motivo, foi utilizado a biblioteca JSoup.**
 
 
-## Feature jdbc-hikari documentation
+## Stack utilizada
 
-- [Micronaut Hikari JDBC Connection Pool documentation](https://micronaut-projects.github.io/micronaut-sql/latest/guide/index.html#jdbc)
+**Back-end:** Java e Micronaut
 
-
-## Feature security-jwt documentation
-
-- [Micronaut Security JWT documentation](https://micronaut-projects.github.io/micronaut-security/latest/guide/index.html)
+**Banco de Dados:** Postgres
 
 
-## Feature serialization-jackson documentation
+## Trabalhos Futuros
 
-- [Micronaut Serialization Jackson Core documentation](https://micronaut-projects.github.io/micronaut-serialization/latest/guide/)
-
-
-## Feature swagger-ui documentation
-
-- [Micronaut Swagger UI documentation](https://micronaut-projects.github.io/micronaut-openapi/latest/guide/index.html)
-
-- [https://swagger.io/tools/swagger-ui/](https://swagger.io/tools/swagger-ui/)
-
-
-## Feature openapi documentation
-
-- [Micronaut OpenAPI Support documentation](https://micronaut-projects.github.io/micronaut-openapi/latest/guide/index.html)
-
-- [https://www.openapis.org](https://www.openapis.org)
-
-
-## Feature test-resources documentation
-
-- [Micronaut Test Resources documentation](https://micronaut-projects.github.io/micronaut-test-resources/latest/guide/)
-
-
-## Feature micronaut-aot documentation
-
-- [Micronaut AOT documentation](https://micronaut-projects.github.io/micronaut-aot/latest/guide/)
-
-
-## Feature kafka documentation
-
-- [Micronaut Kafka Messaging documentation](https://micronaut-projects.github.io/micronaut-kafka/latest/guide/index.html)
-
-
+- Desenvolvimento de um aplicativo mobile responsável pela leitura do QRCode na NFc-e
+- Desenvolvimento de um painel analytics para consumir o banco de dados e construir insights sobre o consumo de produtos, a influência da sazonalidade na variação dos preços, entre outros possíveis relatórios que poderão ser extraídos.
+- Desenvolvimento da autenticação de usuários, a fim de tornar o app público e deixar os dados individualizados entre os usuários.
