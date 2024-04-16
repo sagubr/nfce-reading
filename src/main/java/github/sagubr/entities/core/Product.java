@@ -1,13 +1,14 @@
 package github.sagubr.entities.core;
 
 import github.sagubr.entities.EntityPattern;
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Entity
 @Table(name = "products")
+@Serdeable
 public class Product extends EntityPattern {
 
     @ManyToOne
