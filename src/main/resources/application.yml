@@ -19,7 +19,7 @@ micronaut:
                 paths: classpath:META-INF/swagger/views/swagger-ui
                 mapping: /swagger-ui/**
     server:
-        port: 8083
+        port: 8080
 datasources:
     default:
         url: 'jdbc:postgresql://localhost:5432/nfce-database'
