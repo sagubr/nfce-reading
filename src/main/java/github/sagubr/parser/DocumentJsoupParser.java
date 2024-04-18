@@ -1,5 +1,6 @@
 package github.sagubr.parser;
 
+import github.sagubr.Application;
 import github.sagubr.entities.core.Issuer;
 import github.sagubr.entities.core.Order;
 import github.sagubr.entities.core.Product;
@@ -14,8 +15,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public class DocumentJsoupParser {
+
+    private static final Logger log = Logger.getLogger("DocumentJsoupParser");
 
     private final Document document;
     private final Order order;
@@ -31,6 +35,7 @@ public class DocumentJsoupParser {
 
     private Issuer createIssuer() {
 
+        log.info("CRIANDO FORNECEDOR...");
         Elements tables = this.document.select("table");
         Elements rows = tables.get(6).select("tbody > tr");
         Elements columns = rows.get(0).select("td");
@@ -44,6 +49,7 @@ public class DocumentJsoupParser {
 
     private Order createOrder() {
 
+        log.info("CRIANDO ORDEM...");
         Elements tables = this.document.select("table");
         Elements td = tables.get(4).select("td");
 
@@ -69,6 +75,8 @@ public class DocumentJsoupParser {
     }
 
     private List<Product> createProducts() {
+
+        log.info("CRIANDO PRODUTO(S)...");
 
         Elements tables = this.document.select("table");
         Elements rows = tables.get(1).select("tbody > tr");

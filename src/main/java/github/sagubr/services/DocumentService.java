@@ -7,6 +7,8 @@ import jakarta.inject.Singleton;
 import org.jsoup.HttpStatusException;
 import org.jsoup.nodes.Document;
 
+import java.util.logging.Logger;
+
 @Singleton
 public class DocumentService {
 
