@@ -3,19 +3,20 @@ package github.sagubr.entities;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.serde.annotation.Serdeable;
 
+import java.util.List;
+
 @Serdeable
 public class Address {
 
     @NonNull
-    private String url;
+    private List<String> urls;
 
-    public Address( String url) {
-        this.url = url;
+    public Address(List<String> urls) {
+        this.urls = urls;
     }
 
-    public String getUrl() {
-        return url;
+    public @NonNull List<String> getUrl() {
+        return urls;
     }
-
 }
 

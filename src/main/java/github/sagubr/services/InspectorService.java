@@ -7,37 +7,46 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.jsoup.HttpStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Singleton
 public class InspectorService {
 
     @Inject
     private DocumentService documentService;
 
-    public HttpResponse<String> processUrl(Address address) {
+    public List<HttpResponse<String>> processUrl(Address address) {
+        List<HttpResponse<String>> status = new ArrayList<>();
+
         try {
-            documentService.getDocument(
-                    address.getUrl().replace("|", "%7C")
-            );
+            address.getUrl().forEach(url -> {
+                try {
+                    documentService.getDocument(url.replace("|", "%7C"));
 
-            return HttpResponse.status(HttpStatus.ACCEPTED).body("""
-        URL processada com sucesso:\s
-        """ + address.getUrl());
-        } catch (HttpStatusException ex) {
+                    status.add(HttpResponse.status(HttpStatus.ACCEPTED).body("""
+                            URL processada com sucesso:\s
+                            """ + url));
+                } catch (HttpStatusException ex) {
+                    if (ex.getStatusCode() == HttpStatus.NOT_FOUND.getCode()) {
+                        status.add(HttpResponse.status(HttpStatus.NOT_FOUND).body(
+                                """
+                                        URL não encontrada:\s
+                                        """ + url));
 
-            if (ex.getStatusCode() == HttpStatus.NOT_FOUND.getCode()) {
-                return HttpResponse.status(HttpStatus.NOT_FOUND).body(
-                        """
-                                URL não encontrada:\s
-                                """ + address.getUrl());
-            } else {
-                return HttpResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).body("""
-                        Erro ao processar a URL:\s
-                        """ + ex.getMessage());
-            }
+                    } else {
+                        status.add(HttpResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).body("""
+                                Erro ao processar a URL:\s
+                                """ + ex.getMessage()));
+                    }
+                }
+            });
+            return status;
         } catch (Exception e) {
-            return HttpResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).body("""
+            status.add(HttpResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).body("""
                     Erro interno ao processar a URL:\s
-                    """ + e.getMessage());
+                    """ + e.getMessage()));
+            return status;
         }
     }
 }

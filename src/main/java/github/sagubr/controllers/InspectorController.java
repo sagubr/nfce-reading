@@ -16,6 +16,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 @Tag(name= "INSPECTOR")
 @Controller("/inspector")
 @Serdeable
@@ -33,7 +35,7 @@ public class InspectorController {
     @Post(value = "/process-url")
     @Consumes(MediaType.APPLICATION_JSON)
     @Status(HttpStatus.CREATED)
-        public HttpResponse<String> processUrl(@Body @Valid Address address) {
+        public List<HttpResponse<String>> processUrl(@Body @Valid Address address) {
         return inspectorService.processUrl(address);
     }
 

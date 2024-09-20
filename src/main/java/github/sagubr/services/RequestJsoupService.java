@@ -17,7 +17,7 @@ public class RequestJsoupService {
 
     public Document requestAddress(String url) throws HttpStatusException {
         try {
-            log.info("TENTANDO CONEXÃO: " + url);
+            log.info("Tentando conexão: " + url);
             Connection connection = Jsoup.connect(url);
             connection.userAgent("Mozilla");
             connection.timeout(TIMEOUT_MILLIS);
@@ -26,7 +26,7 @@ public class RequestJsoupService {
         } catch (HttpStatusException ex) {
             throw ex;
         } catch (IOException e) {
-            log.warning("FALHA NA SOLICITAÇÃO: " + url);
+            log.warning("Falha na solicitação: " + url);
             throw new RuntimeException("Erro durante a solicitação HTTP", e);
         }
     }

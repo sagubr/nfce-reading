@@ -1,6 +1,7 @@
 package github.sagubr.services;
 
 import github.sagubr.entities.core.Issuer;
+import github.sagubr.entities.core.Order;
 import github.sagubr.parser.DocumentJsoupParser;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -41,8 +42,9 @@ public class DocumentService {
         } else {
             issuerService.save(documentJsoupParser.getIssuer());
         }
-
-        orderService.save(documentJsoupParser.getOrder());
+        Order order = documentJsoupParser.getOrder();
+        order.setUrl(url);
+        orderService.save(order);
         productService.save(documentJsoupParser.getProducts());
 
     }

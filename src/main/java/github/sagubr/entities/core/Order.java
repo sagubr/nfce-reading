@@ -19,6 +19,9 @@ public class Order extends EntityPattern {
     @Column(unique = true)
     private String keyAccess;
 
+    @Column
+    private String url;
+
     public Order(LocalDateTime date, Issuer issuer, String keyAccess) {
         this.date = date;
         this.issuer = issuer;
@@ -34,6 +37,10 @@ public class Order extends EntityPattern {
 
     public void setIssuer(Issuer issuer) {
         this.issuer = issuer;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getKeyAccess() {

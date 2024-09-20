@@ -35,7 +35,7 @@ public class DocumentJsoupParser {
 
     private Issuer createIssuer() {
 
-        log.info("CRIANDO FORNECEDOR...");
+        log.info("Criando Fornecedor...");
         Elements tables = this.document.select("table");
         Elements rows = tables.get(6).select("tbody > tr");
         Elements columns = rows.get(0).select("td");
@@ -49,7 +49,7 @@ public class DocumentJsoupParser {
 
     private Order createOrder() {
 
-        log.info("CRIANDO ORDEM...");
+        log.info("Criando ordem...");
         Elements tables = this.document.select("table");
         Elements td = tables.get(4).select("td");
 
@@ -76,7 +76,7 @@ public class DocumentJsoupParser {
 
     private List<Product> createProducts() {
 
-        log.info("CRIANDO PRODUTO(S)...");
+        log.info("Criando produto(s)...");
 
         Elements tables = this.document.select("table");
         Elements rows = tables.get(1).select("tbody > tr");
