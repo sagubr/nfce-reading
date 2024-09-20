@@ -19,34 +19,33 @@ public class InspectorService {
     public List<HttpResponse<String>> processUrl(Address address) {
         List<HttpResponse<String>> status = new ArrayList<>();
 
-        try {
-            address.getUrl().forEach(url -> {
-                try {
-                    documentService.getDocument(url.replace("|", "%7C"));
+        address.getUrl().forEach(url -> {
+            try {
+                String processedUrl = url.replace("|", "%7C");
+                documentService.getDocument(processedUrl);
 
-                    status.add(HttpResponse.status(HttpStatus.ACCEPTED).body("""
-                            URL processada com sucesso:\s
-                            """ + url));
-                } catch (HttpStatusException ex) {
-                    if (ex.getStatusCode() == HttpStatus.NOT_FOUND.getCode()) {
-                        status.add(HttpResponse.status(HttpStatus.NOT_FOUND).body(
-                                """
-                                        URL não encontrada:\s
-                                        """ + url));
-
-                    } else {
-                        status.add(HttpResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).body("""
-                                Erro ao processar a URL:\s
-                                """ + ex.getMessage()));
-                    }
+                status.add(HttpResponse.status(HttpStatus.ACCEPTED).body("""
+                    URL processada com sucesso:\s
+                    """ + processedUrl));
+            } catch (HttpStatusException ex) {
+                if (ex.getStatusCode() == HttpStatus.NOT_FOUND.getCode()) {
+                    status.add(HttpResponse.status(HttpStatus.NOT_FOUND).body(
+                            """
+                                    URL não encontrada:\s
+                                    """ + url));
+                } else {
+                    status.add(HttpResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).body("""
+                        Erro ao processar a URL:\s
+                        """ + ex.getMessage()));
                 }
-            });
-            return status;
-        } catch (Exception e) {
-            status.add(HttpResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).body("""
+            } catch (Exception e) {
+                status.add(HttpResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).body("""
                     Erro interno ao processar a URL:\s
                     """ + e.getMessage()));
-            return status;
-        }
+            }
+        });
+
+        return status;
     }
+
 }

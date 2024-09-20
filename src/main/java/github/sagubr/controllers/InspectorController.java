@@ -35,8 +35,8 @@ public class InspectorController {
     @Post(value = "/process-url")
     @Consumes(MediaType.APPLICATION_JSON)
     @Status(HttpStatus.CREATED)
-        public List<HttpResponse<String>> processUrl(@Body @Valid Address address) {
-        return inspectorService.processUrl(address);
+    public void processUrl(@Body @Valid Address address) {
+        inspectorService.processUrl(address);
     }
 
 }
